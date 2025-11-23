@@ -1,0 +1,26 @@
+name: porto-bank-transaction-cluster
+channels:
+  - defaults
+dependencies:
+  - yellowbrick
+  - jupyterlab
+  - pyarrow
+  - ipykernel
+  - kedro
+  - xgboost=1.7.6
+  - pip
+  - python=3.11
+  - scikit-learn-extra
+  - jupyter
+  - seaborn
+  - scikit-learn
+  - openpyxl
+  - plotly
+  - matplotlib
+  - pandas
+  - fastparquet
+  - scipy
+  - numpy
+  - joblib
+  - squarify
+  - mlxtend
