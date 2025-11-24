@@ -159,3 +159,13 @@ venv.bak/
 
 # mlflow local runs
 mlruns/*
+
+test.ipynb
+
+models/**
+!models/**/
+reports/**
+!reports/**/
+!.gitkeep
+
+test.md
