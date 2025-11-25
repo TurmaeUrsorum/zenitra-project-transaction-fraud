@@ -150,3 +150,16 @@ korelasi_heatmap_fig:
 final_preprocessed_df:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/final_preprocessed_df.parquet
+
+# pipeline data modeling
+modeling_kmedoids:
+  type: pandas.ParquetDataset
+  filepath: outputs/data_modeling/modeling_kmedoids.parquet
+
+kmedoids_model:
+  type: pickle.PickleDataset
+  filepath: models/kmedoids_model.pkl
+  backend: joblib
+  versioned: true
+  save_args:
+    compress: 3

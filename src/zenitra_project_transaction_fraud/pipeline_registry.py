@@ -5,6 +5,7 @@ from kedro.pipeline import Pipeline
 from .pipelines.data_cleaning import pipeline as dc
 from .pipelines.data_EDA import pipeline as de
 from .pipelines.data_preproses import pipeline as dp
+from .pipelines.data_modeling import pipeline as dm
 
 
 def register_pipelines() -> dict[str, Pipeline]:
@@ -16,12 +17,15 @@ def register_pipelines() -> dict[str, Pipeline]:
     data_cleaning_pipeline = dc.create_pipeline()
     data_EDA_pipeline = de.create_pipeline()
     data_preproses_pipeline = dp.create_pipeline()
+    data_modeling_pipeline = dm.create_pipeline()
 
     return {
-        "__default__": data_cleaning_pipeline + data_EDA_pipeline + data_preproses_pipeline,
+        "__default__": data_cleaning_pipeline
+        + data_EDA_pipeline
+        + data_preproses_pipeline
+        + data_modeling_pipeline,
         "dc": data_cleaning_pipeline,
         "de": data_EDA_pipeline,
         "dp": data_preproses_pipeline,
+        "dm": data_modeling_pipeline,
     }
-
-    return
