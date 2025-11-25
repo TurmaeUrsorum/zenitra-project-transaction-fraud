@@ -95,7 +95,7 @@
 #   filepath: data/08_reporting/dummy_confusion_matrix.png
 #   versioned: true
 
-raw_data:
+data_raw:
   type: pandas.CSVDataset
   filepath: data/01_raw/bank_data.csv
 
