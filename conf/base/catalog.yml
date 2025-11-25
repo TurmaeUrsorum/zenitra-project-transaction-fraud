@@ -102,3 +102,46 @@ data_raw:
 data_cleaned:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/data_cleaned.parquet
+
+# data EDA pipeline 
+skewnes_check_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/skewnes_checkskewness_check.png
+  save_args:
+    format: png
+
+outliers_check_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/outliers_check.png
+  save_args:
+    format: png
+
+transaction_type_bar_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/transaction_type_bar.png
+  save_args:
+    format: png
+
+channel_bar_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/channel_bar.png
+  save_args:
+    format: png
+
+location_bar_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/location_bar.png
+  save_args:
+    format: png
+
+customer_occupation_bar_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/customer_occupation_bar.png
+  save_args:
+    format: png
+
+korelasi_heatmap_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/korelasi_heatmap.png
+  save_args:
+    format: png

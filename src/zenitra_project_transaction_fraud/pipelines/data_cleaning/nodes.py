@@ -2,6 +2,7 @@
 This is a boilerplate pipeline 'data_cleaning'
 generated using Kedro 1.0.0
 """
+
 import pandas as pd
 import typing as tp
 

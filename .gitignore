@@ -164,8 +164,8 @@ test.ipynb
 
 models/**
 !models/**/
-reports/**
-!reports/**/
+outputs/**
+!outputs/**/
 !.gitkeep
 
 test.md
