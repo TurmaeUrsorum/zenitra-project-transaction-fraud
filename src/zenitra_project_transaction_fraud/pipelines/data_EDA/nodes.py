@@ -89,6 +89,7 @@ def customer_occupation_bar_fig(df: pd.DataFrame) -> Figure:
     plt.close(fig)
     return fig
 
+
 def korelasi_heatmap_fig(df: pd.DataFrame) -> Figure:
     df_numeric = numeric_feature(df)
     fig = plt.figure(figsize=(20, 10))
