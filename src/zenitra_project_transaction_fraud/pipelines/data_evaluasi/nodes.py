@@ -7,7 +7,6 @@ from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import silhouette_score, davies_bouldin_score
 import gower
 import pandas as pd
-import typing as tp
 import numpy as np
 import logging
 
