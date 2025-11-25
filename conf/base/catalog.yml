@@ -163,3 +163,9 @@ kmedoids_model:
   versioned: true
   save_args:
     compress: 3
+
+# pipeline data reporting
+interpretasi_cluster:
+  type: text.TextDataset
+  filepath: outputs/data_reporting/interpretasi_cluster.txt
+  # versioned: true
