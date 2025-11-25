@@ -8,11 +8,13 @@ from .nodes import clean_data
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return Pipeline([
-        node(
-            func=clean_data,
-            inputs="raw_data",
-            outputs="data_cleaned",
-            name="clean_data_node",
-        )
-    ])
+    return Pipeline(
+        [
+            node(
+                func=clean_data,
+                inputs="raw_data",
+                outputs="data_cleaned",
+                name="clean_data_node",
+            )
+        ]
+    )

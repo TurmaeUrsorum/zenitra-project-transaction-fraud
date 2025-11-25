@@ -1,0 +1,66 @@
+"""
+This is a boilerplate pipeline 'data_EDA'
+generated using Kedro 1.0.0
+"""
+
+from kedro.pipeline import Node, Pipeline, node  # noqa
+from .nodes import (
+    skewness_check_fig,
+    outlires_check_fig,
+    transaction_type_bar_fig,
+    channel_bar_fig,
+    location_bar_fig,
+    customer_occupation_bar_fig,
+    korelasi_heatmap_fig
+)
+
+
+def create_pipeline(**kwargs) -> Pipeline:
+    return Pipeline(
+        [
+            # node untuk case segmentation
+            node(
+                func=skewness_check_fig,
+                inputs="data_cleaned",
+                outputs="skewnes_check_fig",
+                name="skewness_check_fig_node",
+            ),
+            node(
+                func=outlires_check_fig,
+                inputs="data_cleaned",
+                outputs="outlires_check_fig",
+                name="outlires_check_fig_node",
+            ),
+            node(
+                func=transaction_type_bar_fig,
+                inputs="data_cleaned",
+                outputs="transaction_type_bar_fig",
+                name="transaction_type_bar_fig_node",
+            ),
+            node(
+                func=channel_bar_fig,
+                inputs="data_cleaned",
+                outputs="channel_bar_fig",
+                name="channel_bar_fig_node",
+            ),
+            node(
+                func=location_bar_fig,
+                inputs="data_cleaned",
+                outputs="location_bar_fig",
+                name="location_bar_fig_node",
+            ),
+            node(
+                func=customer_occupation_bar_fig,
+                inputs="data_cleaned",
+                outputs="customer_occupation_bar_fig",
+                name="customer_occupation_bar_fig_node",
+            ),
+            node(
+                func=korelasi_heatmap_fig,
+                inputs="data_cleaned",
+                outputs="korelasi_heatmap_fig",
+                name="korelasi_heatmap_fig_node",
+            ),
+            # node untuk case fraud detection
+        ]
+    )
