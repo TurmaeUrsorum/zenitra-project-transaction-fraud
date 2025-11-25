@@ -145,3 +145,8 @@ korelasi_heatmap_fig:
   filepath: outputs/data_EDA/korelasi_heatmap.png
   save_args:
     format: png
+
+# pipeline data preproses
+final_preprocessed_df:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/final_preprocessed_df.parquet

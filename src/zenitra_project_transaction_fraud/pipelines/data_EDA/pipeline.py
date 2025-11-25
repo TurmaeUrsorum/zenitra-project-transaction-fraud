@@ -11,7 +11,7 @@ from .nodes import (
     channel_bar_fig,
     location_bar_fig,
     customer_occupation_bar_fig,
-    korelasi_heatmap_fig
+    korelasi_heatmap_fig,
 )
 
 
