@@ -95,9 +95,15 @@
 #   filepath: data/08_reporting/dummy_confusion_matrix.png
 #   versioned: true
 
+# raw data untuk segmentation
 data_raw:
   type: pandas.CSVDataset
   filepath: data/01_raw/bank_data.csv
+
+# raw data untuk fraud
+data_raw_fraud:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/bank_data_fraud.csv
 
 data_cleaned:
   type: pandas.ParquetDataset
