@@ -7,15 +7,10 @@ kedro-viz>=6.7.0
 scikit-learn~=1.5.1
 seaborn~=0.12.1
 yellowbrick
-jupyterlab
 pyarrow
 ipykernel
-kedro
 xgboost==1.7.6
 scikit-learn-extra
-jupyter
-seaborn
-scikit-learn
 openpyxl
 plotly
 matplotlib
