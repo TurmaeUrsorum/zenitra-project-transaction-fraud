@@ -10,6 +10,11 @@ from .nodes import (
     handle_outliers,
     robust_scaler,
     final_dataset,
+    feature_engineering_fraud,
+    scaling_numerik_fraud,
+    location_top_N,
+    one_hot_encoder_fraud,
+    final_dataset_fraud,
 )
 
 
@@ -48,5 +53,35 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="final_preprocessed_df",
             ),
             # node untuk case fraud detection
+            node(
+                func=feature_engineering_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="feature_engineering_fraud",
+                name="feature_engineering_fraud",
+            ),
+            node(
+                func=scaling_numerik_fraud,
+                inputs="feature_engineering_fraud",
+                outputs="scaling_numerik_fraud",
+                name="scaling_numerik_fraud",
+            ),
+            node(
+                func=location_top_N,
+                inputs="feature_engineering_fraud",
+                outputs="location_top_N",
+                name="location_top_N",
+            ),
+            node(
+                func=one_hot_encoder_fraud,
+                inputs="location_top_N",
+                outputs="one_hot_encoder_fraud",
+                name="one_hot_encoder_fraud",
+            ),
+            node(
+                func=final_dataset_fraud,
+                inputs=["one_hot_encoder_fraud", "scaling_numerik_fraud"],
+                outputs="final_preprocessed_df_fraud",
+                name="final_preprocessed_df_fraud",
+            ),
         ]
     )
