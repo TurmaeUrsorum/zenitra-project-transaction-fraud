@@ -202,10 +202,15 @@ cramer_v_fig_fraud:
   save_args:
     format: png
 
-# pipeline data preproses
+# pipeline data preproses untuk segmentation
 final_preprocessed_df:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/final_preprocessed_df.parquet
+
+# pipeline data preproses untuk fraud
+final_preprocessed_df_fraud:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/final_preprocessed_df_fraud.parquet
 
 # pipeline data modeling
 modeling_kmedoids:
