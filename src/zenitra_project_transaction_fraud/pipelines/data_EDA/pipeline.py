@@ -12,6 +12,14 @@ from .nodes import (
     location_bar_fig,
     customer_occupation_bar_fig,
     korelasi_heatmap_fig,
+    skewnes_check_fig_fraud,
+    check_outliers_fig_fraud,
+    modality_check_fig_fraud,
+    distribusi_kategori_fig_fraud,
+    distribusi_kategori_loc_fig_fraud,
+    korelasi_heatmap_fig_fraud,
+    pca_fig_fraud,
+    cramer_v_fig_fraud,
 )
 
 
@@ -62,5 +70,53 @@ def create_pipeline(**kwargs) -> Pipeline:
                 name="korelasi_heatmap_fig_node",
             ),
             # node untuk case fraud detection
+            node(
+                func=skewnes_check_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="skewnes_check_fig_fraud",
+                name="skewnes_check_fig_fraud_node",
+            ),
+            node(
+                func=check_outliers_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="check_outliers_fig_fraud",
+                name="check_outliers_fig_fraud_node",
+            ),
+            node(
+                func=modality_check_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="modality_check_fig_fraud",
+                name="modality_check_fig_fraud_node",
+            ),
+            node(
+                func=distribusi_kategori_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="distribusi_kategori_fig_fraud",
+                name="distribusi_kategori_fig_fraud_node",
+            ),
+            node(
+                func=distribusi_kategori_loc_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="distribusi_kategori_loc_fig_fraud",
+                name="distribusi_kategori_loc_fig_fraud_node",
+            ),
+            node(
+                func=korelasi_heatmap_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="korelasi_heatmap_fig_fraud",
+                name="korelasi_heatmap_fig_fraud_node",
+            ),
+            node(
+                func=pca_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="pca_fig_fraud",
+                name="pca_fig_fraud_node",
+            ),
+            node(
+                func=cramer_v_fig_fraud,
+                inputs="data_cleaned_fraud",
+                outputs="cramer_v_fig_fraud",
+                name="cramer_v_fig_fraud_node",
+            ),
         ]
     )

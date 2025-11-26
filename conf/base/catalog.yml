@@ -110,7 +110,7 @@ data_cleaned_fraud:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/data_cleaned_fraud.parquet
 
-# data EDA pipeline 
+# data EDA pipeline untuk segmentation
 skewnes_check_fig:
   type: matplotlib.MatplotlibWriter
   filepath: outputs/data_EDA/skewnes_checkskewness_check.png
@@ -150,6 +150,55 @@ customer_occupation_bar_fig:
 korelasi_heatmap_fig:
   type: matplotlib.MatplotlibWriter
   filepath: outputs/data_EDA/korelasi_heatmap.png
+  save_args:
+    format: png
+
+# data EDA pipeline untuk fraud
+skewnes_check_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/skewnes_check_fig_fraud.png
+  save_args:
+    format: png
+
+check_outliers_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/check_outliers_fig_fraud.png
+  save_args:
+    format: png
+
+modality_check_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/modality_check_fig_fraud.png
+  save_args:
+    format: png
+
+distribusi_kategori_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/distribusi_kategori_fig_fraud.png
+  save_args:
+    format: png
+
+distribusi_kategori_loc_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/distribusi_kategori_loc_fig_fraud.png
+  save_args:
+    format: png
+
+pca_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/pca_fig_fraud.png
+  save_args:
+    format: png
+
+korelasi_heatmap_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/korelasi_heatmap_fig_fraud.png
+  save_args:
+    format: png
+
+cramer_v_fig_fraud:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/cramer_v_fig_fraud.png
   save_args:
     format: png
 
