@@ -100,14 +100,15 @@ data_raw:
   type: pandas.CSVDataset
   filepath: data/01_raw/bank_data.csv
 
-# raw data untuk fraud
-data_raw_fraud:
-  type: pandas.CSVDataset
-  filepath: data/01_raw/bank_data_fraud.csv
-
+# data cleaned untuk segmentation
 data_cleaned:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/data_cleaned.parquet
+
+# data cleaned untuk fraud
+data_cleaned_fraud:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/data_cleaned_fraud.parquet
 
 # data EDA pipeline 
 skewnes_check_fig:
