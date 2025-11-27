@@ -105,11 +105,6 @@ data_cleaned:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/data_cleaned.parquet
 
-# data cleaned untuk fraud
-data_cleaned_fraud:
-  type: pandas.ParquetDataset
-  filepath: data/02_intermediate/data_cleaned_fraud.parquet
-
 # data EDA pipeline untuk segmentation
 skewnes_check_fig:
   type: matplotlib.MatplotlibWriter
