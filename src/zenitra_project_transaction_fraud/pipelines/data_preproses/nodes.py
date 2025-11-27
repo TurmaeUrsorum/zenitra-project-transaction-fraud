@@ -21,7 +21,7 @@ def recovery_days_columns(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
 
-    df['RecencyDays'] = (df['TransactionDate'] - df['PreviousTransactionDate']).dt.days
+    df['RecencyDays'] = (df['TransactionDate'] - df['PreviousTransactionDate']).dt.days #type: ignore
     print("-> Kolom 'RecencyDays' berhasil dibuat.")
 
     return df
