@@ -4,14 +4,9 @@
 # Documentation for this file format can be found in "Parameters"
 # Link: https://docs.kedro.org/en/1.0.0/configuration/parameters.html
 
-data_cleaning_segmentation:
-  columns:
-    - TransactionAmount
-    - TransactionType
-    - Channel
-    - MerchantID
-    - Location
-    - AccountBalance
-    - CustomerAge
-    - CustomerOccupation
-    - TransactionDuration
+clean_data:
+  subset:
+    - TransactionID
+
+date_formated:
+  errors: coerce
