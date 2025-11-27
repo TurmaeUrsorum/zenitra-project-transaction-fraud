@@ -153,3 +153,42 @@ persebaran_login_attempts_fig:
   filepath: outputs/data_EDA/7.persebaran_login_attempts_fig.png
   save_args:
     format: png
+
+# data modeling
+feature_transformed:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/feature_transformed.parquet
+
+anomalies_df:
+  type: pandas.ParquetDataset
+  filepath: outputs/data_modeling/feature_transformed.parquet
+
+model_IF:
+  type: pickle.PickleDataset
+  filepath: models/model_IF.pkl
+  backend: joblib
+  versioned: true
+  save_args:
+    compress: 3
+
+clusters_df:
+  type: pandas.ParquetDataset
+  filepath: outputs/data_modeling/clusters_df.parquet
+
+model_KM:
+  type: pickle.PickleDataset
+  filepath: models/model_KM.pkl
+  backend: joblib
+  versioned: true
+  save_args:
+    compress: 3
+
+anomalies_detect_df:
+  type: pandas.ParquetDataset
+  filepath: outputs/data_modeling/anomalies_detect_df.parquet
+
+anomalies_plot_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_modeling/anomalies_plot_fig.png
+  save_args:
+    format: png

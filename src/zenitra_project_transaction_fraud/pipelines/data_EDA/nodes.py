@@ -14,7 +14,7 @@ def analisis_univariat(df: pd.DataFrame) -> Figure:
     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
     fig.suptitle("Analisis Univariat: Distribusi Data", fontsize=16)
 
-    sns.histplot(df["CustomerAge"], bins=20, kde=True, color="skyblue", ax=axes[0, 0]) #type: ignore
+    sns.histplot(df["CustomerAge"], bins=20, kde=True, color="skyblue", ax=axes[0, 0])  # type: ignore
     axes[0, 0].set_title("Distribusi Umur Nasabah")
 
     sns.countplot(
@@ -67,7 +67,7 @@ def analisis_bivariat(df: pd.DataFrame) -> Figure:
     axes[0, 0].set_ylabel("Saldo Rata-rata ($)")
 
     sns.histplot(
-        df["TransactionAmount"], #type: ignore
+        df["TransactionAmount"],  # type: ignore
         bins=30,
         kde=True,
         color="purple",
@@ -204,9 +204,9 @@ def customer_occupation_transaction(df: pd.DataFrame) -> Figure:
     plt.legend(title="Tipe Transaksi", bbox_to_anchor=(1, 1))
 
     for c in ax.containers:
-        labels = [f"{w:.0f}%" if w > 5 else "" for w in c.datavalues] #type: ignore
+        labels = [f"{w:.0f}%" if w > 5 else "" for w in c.datavalues]  # type: ignore
         ax.bar_label(
-            c, #type: ignore
+            c,  # type: ignore
             labels=labels,
             label_type="center",
             color="white",
@@ -248,10 +248,10 @@ def agegroup_with_channel(df: pd.DataFrame) -> Figure:
     plt.xticks(rotation=0)
     plt.legend(title="Media Transaksi", bbox_to_anchor=(1.02, 1), loc="upper left")
 
-    for c in ax2.containers: 
-        labels = [f"{v:.0f}%" for v in c.datavalues] #type: ignore
+    for c in ax2.containers:
+        labels = [f"{v:.0f}%" for v in c.datavalues]  # type: ignore
         ax2.bar_label(
-            c, #type: ignore
+            c,  # type: ignore
             labels=labels,
             label_type="center",
             color="black",
