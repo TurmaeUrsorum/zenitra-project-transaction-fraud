@@ -24,24 +24,27 @@ from zenitra_project_transaction_fraud.pipelines.data_cleaning.nodes import (
 import pandas as pd
 import pytest
 
+
 def sample_df():
-    return pd.DataFrame({
-        "AccountID": [1, None, 3],
-        "CustomerAge": [25, -5, None],
-        "Channel": ["atm", None, "online"],
-        "CustomerOccupation": ["doctor", None, "engineer"],
-        "DeviceID": ["D1", None, "D3"],
-        "IP Address": ["1.1.1.1", None, "3.3.3.3"],
-        "MerchantID": ["M1", None, "M3"],
-        "Location": ["jakarta", None, "bandung"],
-        "TransactionDate": ["2024-05-01", "2024-05-03", "2024-05-02"],
-        "PreviousTransactionDate": ["2024-04-25", "2024-04-30", "2024-04-20"],
-        "TransactionAmount": [1000, 2000, 3000],
-        "AccountBalance": [5000, 6000, None],
-        "TransactionType": ["cash", "cash", "cash"],
-        "TransactionDuration": [10, None, 5],
-        "LoginAttempts": [1, None, 7],
-    })
+    return pd.DataFrame(
+        {
+            "AccountID": [1, None, 3],
+            "CustomerAge": [25, -5, None],
+            "Channel": ["atm", None, "online"],
+            "CustomerOccupation": ["doctor", None, "engineer"],
+            "DeviceID": ["D1", None, "D3"],
+            "IP Address": ["1.1.1.1", None, "3.3.3.3"],
+            "MerchantID": ["M1", None, "M3"],
+            "Location": ["jakarta", None, "bandung"],
+            "TransactionDate": ["2024-05-01", "2024-05-03", "2024-05-02"],
+            "PreviousTransactionDate": ["2024-04-25", "2024-04-30", "2024-04-20"],
+            "TransactionAmount": [1000, 2000, 3000],
+            "AccountBalance": [5000, 6000, None],
+            "TransactionType": ["cash", "cash", "cash"],
+            "TransactionDuration": [10, None, 5],
+            "LoginAttempts": [1, None, 7],
+        }
+    )
 
 
 def test_clean_data():
@@ -106,7 +109,9 @@ def test_string_consistent():
     result = string_consistent(df)
     assert set(result["Location"]) == set([x.title() for x in result["Location"]])
     assert set(result["Channel"]) == set([x.title() for x in result["Channel"]])
-    assert set(result["CustomerOccupation"]) == set([x.title() for x in result["CustomerOccupation"]])
+    assert set(result["CustomerOccupation"]) == set(
+        [x.title() for x in result["CustomerOccupation"]]
+    )
 
 
 def test_dated_formated_handled():
