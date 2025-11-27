@@ -25,8 +25,8 @@ def register_pipelines() -> dict[str, Pipeline]:
 
     return {
         "__default__": data_cleaning_pipeline
-        + data_EDA_pipeline
         + data_preproses_pipeline
+        + data_EDA_pipeline
         + data_modeling_pipeline
         + data_evaluasi_pipeline
         + data_reporting_pipeline,
