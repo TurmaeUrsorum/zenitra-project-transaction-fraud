@@ -3,265 +3,316 @@ This is a boilerplate pipeline 'data_EDA'
 generated using Kedro 1.0.0
 """
 
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import pandas as pd
 import seaborn as sns
 import numpy as np
-import scipy.stats as ss
 
 
-def numeric_feature(df: pd.DataFrame) -> pd.DataFrame:
-    return df.select_dtypes(include=["int64", "float64"])
+def analisis_univariat(df: pd.DataFrame) -> Figure:
+    fig, axes = plt.subplots(2, 2, figsize=(16, 10))
+    fig.suptitle("Analisis Univariat: Distribusi Data", fontsize=16)
 
+    sns.histplot(df["CustomerAge"], bins=20, kde=True, color="skyblue", ax=axes[0, 0]) #type: ignore
+    axes[0, 0].set_title("Distribusi Umur Nasabah")
 
-def categorical_feature(df: pd.DataFrame) -> pd.DataFrame:
-    return df.select_dtypes(include=["object"])
+    sns.countplot(
+        y="CustomerOccupation",
+        data=df,
+        order=df["CustomerOccupation"].value_counts().index,
+        palette="viridis",
+        ax=axes[0, 1],
+    )
+    axes[0, 1].set_title("Jumlah Nasabah per Pekerjaan")
 
+    sns.boxplot(x="AccountBalance", data=df, color="lightgreen", ax=axes[1, 0])
+    axes[1, 0].set_title("Sebaran Saldo Rekening (Cek Outlier)")
 
-# case untuk user segmentation
+    channel_counts = df["Channel"].value_counts()
+    axes[1, 1].pie(
+        channel_counts,
+        labels=channel_counts.index,
+        autopct="%1.1f%%",
+        colors=sns.color_palette("pastel"),
+        startangle=90,
+    )
+    axes[1, 1].set_title("Persentase Penggunaan Kanal")
 
-
-def skewness_check_fig(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_numeric.columns):
-        ax = fig.add_subplot(2, 5, i + 1)
-        sns.histplot(x=df_numeric[col], ax=ax)
-        ax.set_title(col)
     plt.tight_layout()
-    plt.close(fig)
+    # plt.close(fig)
+
     return fig
 
 
-def outlires_check_fig(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_numeric.columns):
-        ax = fig.add_subplot(2, 5, i + 1)
-        sns.boxplot(x=df_numeric[col], ax=ax)
-        ax.set_title(col)
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
+def analisis_bivariat(df: pd.DataFrame) -> Figure:
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig.suptitle("Analisis Bivariat", fontsize=16)
 
-
-def transaction_type_bar_fig(df: pd.DataFrame) -> Figure:
-    df_cat = categorical_feature(df)
-    fig = plt.figure(figsize=(20, 10))
+    avg_balance = (
+        df.groupby("CustomerOccupation")["AccountBalance"]
+        .mean()
+        .sort_values(ascending=False)
+        .index
+    )
     sns.barplot(
-        x=df_cat["TransactionType"].value_counts().index,
-        y=df_cat["TransactionType"].value_counts().values,
+        x="CustomerOccupation",
+        y="AccountBalance",
+        data=df,
+        order=avg_balance,
+        palette="Blues_d",
+        ax=axes[0, 0],
     )
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
+    axes[0, 0].set_title("Rata-rata Saldo per Pekerjaan")
+    axes[0, 0].set_ylabel("Saldo Rata-rata ($)")
 
-
-def channel_bar_fig(df: pd.DataFrame) -> Figure:
-    df_cat = categorical_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    sns.barplot(
-        x=df_cat["Channel"].value_counts().index,
-        y=df_cat["Channel"].value_counts().values,
+    sns.histplot(
+        df["TransactionAmount"], #type: ignore
+        bins=30,
+        kde=True,
+        color="purple",
+        log_scale=True,
+        ax=axes[0, 1],
     )
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
 
-
-def location_bar_fig(df: pd.DataFrame) -> Figure:
-    df_cat = categorical_feature(df)
-    top5 = df_cat["Location"].value_counts().head(5)
-    fig = plt.figure(figsize=(20, 10))
-    plt.barh(top5.index[::-1], top5.values[::-1])  # type: ignore
-    plt.xlabel("Count")
-    plt.ylabel("Location")
-    plt.title("Top 5 Location")
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
-
-
-def customer_occupation_bar_fig(df: pd.DataFrame) -> Figure:
-    df_cat = categorical_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    sns.barplot(
-        x=df_cat["CustomerOccupation"].value_counts().index,
-        y=df_cat["CustomerOccupation"].value_counts().values,
+    axes[0, 1].set_title(
+        "Sebaran Nominal Transaksi (Log Scale)", fontsize=12, fontweight="bold"
     )
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
+    axes[0, 1].set_xlabel("Nominal ($) - Skala Logaritma")
+    axes[0, 1].set_ylabel("Frekuensi")
 
-
-def korelasi_heatmap_fig(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    sns.heatmap(df_numeric.corr(), annot=True)
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
-
-
-# case untuk fraud detection
-
-
-def skewnes_check_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_numeric.columns):
-        ax = fig.add_subplot(2, 3, i + 1)
-        sns.histplot(x=np.log1p(df_numeric[col]), ax=ax)
-        ax.set_title(col)
-    plt.title("Distribution of Numeric Features")
-    plt.tight_layout()
-    plt.close(fig)
-    return fig
-
-
-def check_outliers_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_numeric.columns):
-        ax = fig.add_subplot(2, 3, i + 1)
-        sns.boxplot(x=df_numeric[col], ax=ax)
-        ax.set_title(col)
-    plt.tight_layout()
-    plt.title("Boxplot of Numeric Features")
-    plt.close(fig)
-    return fig
-
-
-def modality_check_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_numeric.columns):
-        ax = fig.add_subplot(2, 3, i + 1)
-        sns.kdeplot(df_numeric[col], ax=ax)  # type: ignore
-        ax.set_title(col)
-    plt.tight_layout()
-    plt.title("Modality of Numeric Features")
-    plt.close(fig)
-    return fig
-
-
-def distribusi_kategori_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_categorical2 = categorical_feature(df)
-    df_categorical2 = df_categorical2.drop(
-        [
-            "Location",
-            "AccountID",
-            "DeviceID",
-            "IP Address",
-            "MerchantID",
-            "TransactionID",
-        ],
-        axis=1,
+    mean_val = df["TransactionAmount"].mean()
+    axes[0, 1].axvline(
+        mean_val, color="red", linestyle="--", label=f"Rata-rata: ${mean_val:.0f}"
     )
-    fig = plt.figure(figsize=(20, 10))
-    for i, col in enumerate(df_categorical2.columns):
-        ax = fig.add_subplot(2, 3, i + 1)
-        sns.barplot(
-            x=df_categorical2[col].value_counts().index[:10],
-            y=df_categorical2[col].value_counts().values[:10],
-        )
-        ax.set_title(col)
+    axes[0, 1].legend()
+
+    sns.countplot(x="AgeGroup", hue="Channel", data=df, palette="Set2", ax=axes[1, 0])
+    axes[1, 0].set_title("Preferensi Kanal Transaksi per Generasi")
+    axes[1, 0].legend(title="Channel", loc="upper right")
+
+    sns.scatterplot(
+        x="AccountBalance",
+        y="TransactionAmount",
+        hue="CustomerOccupation",
+        alpha=0.6,
+        data=df,
+        ax=axes[1, 1],
+    )
+    axes[1, 1].set_title("Korelasi Saldo vs Nilai Transaksi")
+
     plt.tight_layout()
-    plt.title("Distribution of Categorical Features")
-    plt.close(fig)
+    # plt.close(fig)
+
     return fig
 
 
-def distribusi_kategori_loc_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_categorical_location = categorical_feature(df)
-    df_categorical_location = df_categorical_location.drop(
-        ["TransactionID", "AccountID", "DeviceID", "IP Address", "MerchantID"], axis=1
-    )
-    df_categorical = categorical_feature(df)
-    df_categorical = df_categorical.drop(
-        ["TransactionID", "AccountID", "DeviceID", "IP Address", "MerchantID"], axis=1
-    )
-    df_categorical_location = (
-        df_categorical_location["Location"].value_counts().head(5).index
-    )
-    fig = plt.figure(figsize=(20, 10))
-    sns.barplot(
-        x=df_categorical_location,
-        y=df_categorical["Location"].value_counts().head(5).values,
-    )
-    plt.title("Distribution of Location")
-    plt.close(fig)
-    return fig
-
-
-def korelasi_heatmap_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    corr = df_numeric.corr() * 100  # ubah ke persen
-
+def analisis_multivariate_korelasi(df: pd.DataFrame) -> Figure:
     fig = plt.figure(figsize=(10, 6))
-    sns.heatmap(
-        corr,
-        annot=True,  # tampilkan angkanya
-        fmt=".1f",  # 1 angka desimal
-        cmap="coolwarm",
-    )
-    plt.title("Correlation Heatmap (in %)")
-    plt.close(fig)
-    return fig
 
-
-def pca_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_numeric = numeric_feature(df)
-    scaled = StandardScaler().fit_transform(df_numeric)
-    pca = PCA(n_components=2)
-    pca_data = pca.fit_transform(scaled)
-
-    df["PC1"], df["PC2"] = pca_data[:, 0], pca_data[:, 1]
-
-    fig = plt.figure(figsize=(20, 10))
-    sns.scatterplot(data=df, x="PC1", y="PC2")
-    plt.title("PCA 2D — Potential Patterns / Outliers")
-    plt.close(fig)
-    return fig
-
-
-def cramers_v(x, y):
-    confusion = pd.crosstab(x, y)
-    chi2 = ss.chi2_contingency(confusion)[0]
-    n = confusion.sum().sum()
-    phi2 = chi2 / n
-    r, k = confusion.shape
-    phi2_corr = max(0, phi2 - ((k - 1) * (r - 1)) / (n - 1))
-    r_corr = r - ((r - 1) ** 2) / (n - 1)
-    k_corr = k - ((k - 1) ** 2) / (n - 1)
-    return np.sqrt(phi2_corr / min((k_corr - 1), (r_corr - 1)))
-
-
-def cramer_v_fig_fraud(df: pd.DataFrame) -> Figure:
-    df_categorical = categorical_feature(df)
-    df_categorical = df_categorical.drop(
-        ["TransactionID", "AccountID", "DeviceID", "IP Address", "MerchantID"], axis=1
-    )
-
-    corr_matrix = pd.DataFrame(
+    corr_matrix = df[
         [
-            [
-                cramers_v(df_categorical[col_i], df_categorical[col_j])
-                for col_j in df_categorical.columns
-            ]
-            for col_i in df_categorical.columns
-        ],
-        columns=df_categorical.columns,
-        index=df_categorical.columns,
+            "TransactionAmount",
+            "AccountBalance",
+            "CustomerAge",
+            "TransactionDuration",
+            "RecencyDays",
+            "LoginAttempts",
+        ]
+    ].corr()
+
+    sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5)
+    plt.title("Matriks Korelasi Antar Variabel Numerik")
+    # plt.close(fig)
+
+    return fig
+
+
+def customer_occupation(df: pd.DataFrame) -> Figure:
+    fig = plt.figure(figsize=(12, 6))
+
+    data_q1 = (
+        df.groupby("CustomerOccupation")["AccountBalance"]
+        .mean()
+        .sort_values(ascending=False)
+        .reset_index()
     )
 
-    fig = plt.figure(figsize=(8, 6))
-    sns.heatmap(
-        corr_matrix * 100, annot=True, fmt=".2f", cmap="coolwarm", vmin=0, vmax=1
+    colors_q1 = [
+        "#005b96" if x == data_q1["AccountBalance"].max() else "#d3d3d3"
+        for x in data_q1["AccountBalance"]
+    ]
+
+    ax1 = sns.barplot(
+        x="AccountBalance", y="CustomerOccupation", data=data_q1, palette=colors_q1
     )
-    plt.title("Cramér's V Heatmap")
-    plt.close(fig)
+
+    plt.title(
+        "Dokter adalah Nasabah Paling Bernilai dengan Rata-rata Saldo Tertinggi",
+        fontsize=16,
+        fontweight="bold",
+        loc="left",
+        pad=20,
+    )
+    plt.xlabel("Rata-rata Saldo ($)", fontsize=12)
+    plt.ylabel("")
+
+    for i, v in enumerate(data_q1["AccountBalance"]):
+        ax1.text(
+            v + 100,
+            i,
+            f"${v:,.0f}",
+            va="center",
+            fontweight="bold",
+            color="#333333",
+            fontsize=11,
+        )
+
+    sns.despine(left=True, bottom=True)
+    plt.tight_layout()
+    # plt.close(fig)
+
+    return fig
+
+
+def customer_occupation_transaction(df: pd.DataFrame) -> Figure:
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ct_product = (
+        pd.crosstab(df["CustomerOccupation"], df["TransactionType"], normalize="index")
+        * 100
+    )
+    ct_product = ct_product.sort_values(by="Credit", ascending=False)
+
+    ax = ct_product.plot(
+        kind="barh",
+        stacked=True,
+        color=["#d62728", "#2ca02c"],
+        figsize=(12, 6),
+        width=0.7,
+        ax=ax,
+    )
+
+    plt.title(
+        "Pensiunan (Retired) Paling Sering Menggunakan Kartu Kredit (30%)",
+        fontsize=18,
+        fontweight="bold",
+        loc="left",
+    )
+    plt.xlabel("Persentase Transaksi (%)", fontsize=12)
+    plt.ylabel("")
+    plt.legend(title="Tipe Transaksi", bbox_to_anchor=(1, 1))
+
+    for c in ax.containers:
+        labels = [f"{w:.0f}%" if w > 5 else "" for w in c.datavalues] #type: ignore
+        ax.bar_label(
+            c, #type: ignore
+            labels=labels,
+            label_type="center",
+            color="white",
+            fontweight="bold",
+            fontsize=11,
+        )
+
+    sns.despine(left=True, bottom=True)
+    plt.tight_layout()
+    # plt.close(fig)
+
+    return fig
+
+
+def agegroup_with_channel(df: pd.DataFrame) -> Figure:
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    data_q2 = pd.crosstab(df["AgeGroup"], df["Channel"], normalize="index") * 100
+
+    ax2 = data_q2.plot(
+        kind="bar",
+        stacked=True,
+        color=["#ff9999", "#66b3ff", "#99ff99"],
+        figsize=(12, 6),
+        width=0.8,
+        edgecolor="white",
+        ax=ax,
+    )
+
+    plt.title(
+        "Preferensi Kanal Merata: Gen Z Masih Menggunakan Cabang & ATM",
+        fontsize=16,
+        fontweight="bold",
+        loc="left",
+        pad=20,
+    )
+    plt.xlabel("Kelompok Usia", fontsize=12)
+    plt.ylabel("Persentase Penggunaan (%)", fontsize=12)
+    plt.xticks(rotation=0)
+    plt.legend(title="Media Transaksi", bbox_to_anchor=(1.02, 1), loc="upper left")
+
+    for c in ax2.containers: 
+        labels = [f"{v:.0f}%" for v in c.datavalues] #type: ignore
+        ax2.bar_label(
+            c, #type: ignore
+            labels=labels,
+            label_type="center",
+            color="black",
+            fontweight="bold",
+            fontsize=10,
+        )
+
+    sns.despine(top=True, right=True)
+    plt.tight_layout()
+    # plt.close(fig)
+
+    return fig
+
+
+def persebaran_login_attempts(df: pd.DataFrame) -> Figure:
+    fig = plt.figure(figsize=(12, 6))
+
+    suspicious_login = df[df["LoginAttempts"] > 3]
+    normal_login = df[df["LoginAttempts"] <= 3]
+
+    plt.scatter(
+        normal_login["TransactionDuration"],
+        normal_login["TransactionAmount"],
+        c="lightgrey",
+        alpha=0.5,
+        label="Normal Login",
+        s=30,
+    )
+
+    plt.scatter(
+        suspicious_login["TransactionDuration"],
+        suspicious_login["TransactionAmount"],
+        c="red",
+        label="Suspicious (>3 Logins)",
+        s=100,
+        edgecolors="black",
+    )
+
+    plt.title(
+        "RED FLAG: 58 Transaksi Terjadi Setelah Gagal Login >3 Kali",
+        fontsize=16,
+        fontweight="bold",
+        loc="left",
+    )
+    plt.xlabel("Durasi Transaksi (detik)")
+    plt.ylabel("Nilai Transaksi ($)")
+    plt.legend(loc="upper right")
+
+    for i, row in suspicious_login.iterrows():
+        if row["TransactionAmount"] > 1000:
+            plt.text(
+                row["TransactionDuration"] + 5,
+                row["TransactionAmount"],
+                row["TransactionID"],
+                fontsize=9,
+                fontweight="bold",
+                color="darkred",
+            )
+
+    sns.despine()
+    plt.tight_layout()
+    # plt.close(fig)
+
     return fig

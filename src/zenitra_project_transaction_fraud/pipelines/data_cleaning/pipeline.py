@@ -87,6 +87,6 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs="dated_formated_handled",
                 outputs="data_cleaned",
                 name="dated_drop_node",
-            )
+            ),
         ]
     )

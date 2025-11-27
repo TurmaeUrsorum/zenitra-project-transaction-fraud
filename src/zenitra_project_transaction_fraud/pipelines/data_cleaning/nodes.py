@@ -15,9 +15,7 @@ def clean_data(df: pd.DataFrame, params: tp.Dict) -> pd.DataFrame:
 
     df_main_features = df.dropna(subset=params["subset"])
 
-    df_main_features = df_main_features.drop_duplicates(
-        subset=params["subset"]
-    )
+    df_main_features = df_main_features.drop_duplicates(subset=params["subset"])
 
     return df_main_features
 
@@ -30,7 +28,7 @@ def date_formated(df: pd.DataFrame, params: tp.Dict) -> pd.DataFrame:
     df["PreviousTransactionDate"] = pd.to_datetime(
         df["PreviousTransactionDate"], errors=params["errors"]
     )
-    df["TransactionHour"] = df["TransactionDate"].dt.hour #type: ignore
+    df["TransactionHour"] = df["TransactionDate"].dt.hour  # type: ignore
 
     return df
 

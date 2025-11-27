@@ -109,3 +109,47 @@ data_cleaned:
 feature_engineered:
   type: pandas.ParquetDataset
   filepath: data/03_primary/feature_engineered.parquet
+
+# data EDA
+
+analisis_univariat_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/1.analisis_univariat_fig.png
+  save_args:
+    format: png
+
+analisis_bivariat_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/2.analisis_bivariat_fig.png
+  save_args:
+    format: png
+
+analisis_multivariate_korelasi_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/3.analisis_multivariate_korelasi_fig.png
+  save_args:
+    format: png
+
+customer_occupation_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/4.customer_occupation_fig.png
+  save_args:
+    format: png
+
+customer_occupation_transaction_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/5.customer_occupation_transaction_fig.png
+  save_args:
+    format: png
+
+agegroup_with_channel_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/6.agegroup_with_channel_fig.png
+  save_args:
+    format: png
+
+persebaran_login_attempts_fig:
+  type: matplotlib.MatplotlibWriter
+  filepath: outputs/data_EDA/7.persebaran_login_attempts_fig.png
+  save_args:
+    format: png
