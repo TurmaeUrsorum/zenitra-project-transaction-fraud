@@ -262,7 +262,16 @@ pip install -r requirements.txt
 
 1. Clone repository
 2. Setup environment
-3. Jalankan `kedro run`
+3. Jalankan unit test
+
+```python
+pytest # global unit test
+
+pytest test/pipelines/data_EDA/test_nodes.py # unit test spesifik
+
+```
+
+4. Jalankan `kedro run`
 
 ```bash
 # semua pipeline dijalankan
